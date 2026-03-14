@@ -16,13 +16,15 @@ constructor(x,y,radius,color,text,speed){
 this.posX = x;
 this.posY = y;
 this.radius = radius;
+
 this.originalColor = color;
 this.color = color;
+
 this.text = text;
 this.speed = speed;
 
-this.dx = 1 * this.speed;
-this.dy = 1 * this.speed;
+this.dx = (Math.random() - 0.5) * this.speed * 2;
+this.dy = (Math.random() - 0.5) * this.speed * 2;
 
 }
 
@@ -53,12 +55,11 @@ update(context){
 this.draw(context);
 
 this.posX += this.dx;
+this.posY += this.dy;
 
 if(this.posX + this.radius > window_width || this.posX - this.radius < 0){
 this.dx = -this.dx;
 }
-
-this.posY += this.dy;
 
 if(this.posY + this.radius > window_height || this.posY - this.radius < 0){
 this.dy = -this.dy;
@@ -77,7 +78,6 @@ for(let i=0;i<n;i++){
 let radius = Math.random()*30 + 20;
 
 let x = Math.random()*(window_width - radius*2) + radius;
-
 let y = Math.random()*(window_height - radius*2) + radius;
 
 let color = `#${Math.floor(Math.random()*16777215).toString(16)}`;
@@ -106,8 +106,19 @@ let distance = Math.sqrt(dx*dx + dy*dy);
 
 if(distance < circles[i].radius + circles[j].radius){
 
+// Flash azul
 circles[i].color = "#0000FF";
 circles[j].color = "#0000FF";
+
+// Rebote
+let tempDx = circles[i].dx;
+let tempDy = circles[i].dy;
+
+circles[i].dx = circles[j].dx;
+circles[i].dy = circles[j].dy;
+
+circles[j].dx = tempDx;
+circles[j].dy = tempDy;
 
 }else{
 
